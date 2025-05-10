@@ -3,6 +3,8 @@
 #include <ESPAsyncWebServer.h>
 #include <WebSocketsServer.h>
 
+//Plenty of credit goes to Shawn Hymel's tutorial on making a WebServer/WebSocket using an ESP32
+
 const char *ssid = "MAE361 Group 11";
 const char *password = "12345678";
 const char *msg_up_button = "upButton";
