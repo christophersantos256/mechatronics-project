@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>Mechatronics Project</title>
+
+<!--DEFINE BUTTON STYLE-->
+
+<style>
+    #pressUpButton{
+        width:50px;
+        height:50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height:50px;
+    }
+</style>
+
+<style> 
+    #pressLeftButton{ 
+        width:50px;
+        height:50px;
+        font-size:30px;
+        text-align:center;
+        vertical-align:middle;
+        line-height:50px;
+    }
+</style>
+
+<style>
+    #pressRightButton{
+        width:50px;
+        height:50px;
+        font-size:30px;
+        text-align:center;
+        vertical-align:middle;
+        line-height:50px;
+    }
+</style>
+
+<style>
+    #pressLeftButton2{
+        width:50px;
+        height:50px;
+        font-size:30px;
+        text-align:center;
+        vertical-align:middle;
+        line-height:50px;
+    }
+</style>
+
+<style>
+    #pressCenterButton{
+        width:50px;
+        height:50px;
+        font-size:30px;
+        text-align:center;
+        vertical-align:middle;
+        line-height:50px;
+    }
+</style>
+
+<style>
+    #pressRightButton2 {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<style>
+    #pressLeftButton3 {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<style>
+    #pressBackButton {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<style>
+    #pressRightButton3 {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<style>
+    #pressSteerRightButton {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<style>
+    #pressSteerLeftButton {
+        width: 50px;
+        height: 50px;
+        font-size: 30px;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 50px;
+    }
+</style>
+
+<!-------------------------------------------------------------------------------------->
+
+<script language="javascript" type="text/javascript">
+
+    var url = "ws://192.168.4.1:4444/";
+    var output;
+    var upbutton;
+    var leftbutton;
+    var rightbutton;
+    var leftbutton2;
+    var rightbutton2;
+    var centerbutton;
+    var leftbutton3;
+    var backbutton;
+    var rightbutton;
+    var steerleft;
+    var steerright;
+    var canvas;
+    var context;
+
+    function init() {
+        upbutton = document.getElementById("pressUpButton");
+        leftbutton = document.getElementById("pressLeftButton");
+        rightbutton = document.getElementById("pressRightButton");
+        leftbutton2 = document.getElementById("pressLeftButton2");
+        rightbutton2 = document.getElementById("pressRightButton2");
+        centerbutton = document.getElementById("pressCenterButton");
+        leftbutton3 = document.getElementById("pressLeftButton3");
+        backbutton = document.getElementById("pressBackButton");
+        rightbutton3 = document.getElementById("pressRightButton3");
+        steerright = document.getElementById("pressSteerRightButton");
+        steerleft = document.getElementById("pressSteerLeftButton");
+        output = document.getElementById("output");
+        canvas = document.getElementById("upButton");
+
+        wsConnect(url);
+    }
+
+    function wsConnect(url) {
+        websocket = new WebSocket(url);
+
+        websocket.onopen = function (evt) { onOpen(evt) };
+        websocket.onclose = function (evt) { onClose(evt) };
+        websocket.onmessage = function (evt) { onMessage(evt) };
+        websocket.onerror = function (evt) { onError(evt) };
+    }
+
+    function onOpen(evt) {
+        console.log("connected");
+        upbutton.disabled = false;
+        rightbutton.disabled = false;
+        leftbutton.disabled = false;
+        leftbutton2.disabled = false;
+        rightbutton2.disabled = false;
+        leftbutton3.disabled = false;
+        backbutton.disabled = false;
+        rightbutton3.disabled = false;
+        steerright.disabled = false;
+        steerleft.disabled = false;
+        centerbutton.disabled = false;
+    }
+
+    function onClose(evt) {
+        console.log("disconnected");
+        upbutton.disabled = true;
+        rightbutton.disabled = true;
+        leftbutton.disabled = true;
+        rightbutton2.disabled = true;
+        leftbutton2.disabled = true;
+        leftbutton3.disabled = true;
+        backbutton.disabled = true;
+        rightbutton3.disabled = true;
+        steerright.disabled = true;
+        steerleft.disabled = true;
+        centerbutton.disabled = true;
+        setTimeout(function () { wsConnect(url) }, 2000);
+    }
+
+    function onError(evt) {
+        console.log("ERROR: " + evt.data);
+    }
+
+    function doSend(message) {
+        console.log("Sending: " + message);
+        websocket.send(message);
+    }
+
+    //-----------------------------------BUTTONS------------------------------------//
+
+    //NORTHWEST BUTTON
+    function onPressLeftButton() {
+        pressLeftButton.style.backgroundColor = "gray";
+        doSend("leftButtonPressed")
+    }
+    function onReleaseLeftButton() {
+        pressLeftButton.style.backgroundColor = "";
+        doSend("leftButtonReleased")
+    }
+
+    //NORTH BUTTON 
+    function onPressUpButton() { 
+        pressUpButton.style.backgroundColor = "gray";
+        doSend("upButtonPressed")
+    }
+    function onReleaseUpButton() {
+        pressUpButton.style.backgroundColor = "";
+        doSend("upButtonReleased")
+    }
+
+    //NORTHEAST BUTTON
+    function onPressRightButton() {
+        pressRightButton.style.backgroundColor = "gray";
+        doSend("rightButtonPressed")
+    }
+    function onReleaseRightButton() {
+        pressRightButton.style.backgroundColor = "";
+        doSend("rightButtonReleased")
+    }
+
+    //WEST BUTTON
+
+    function onPressLeftButton2() {
+        pressLeftButton2.style.backgroundColor = "gray";
+        doSend("leftButton2Pressed")
+    }
+
+    function onReleaseLeftButton2() {
+        pressLeftButton2.style.backgroundColor = "";
+        doSend("leftButton2Released")
+    }
+
+    //EAST BUTTON
+
+    function onPressRightButton2() {
+        pressRightButton2.style.backgroundColor = "gray";
+        doSend("rightButton2Pressed")
+    }
+
+    function onReleaseRightButton2() {
+        pressRightButton2.style.backgroundColor = "";
+        doSend("rightButton2Released")
+    }
+
+    //CENTER BUTTON (for aesthetics)
+
+    function onPressCenterButton() {
+        pressCenterButton.style.backgroundColor = "red";
+        doSend("centerButtonPressed")
+    }
+
+    function onReleaseCenterButton() {
+        pressCenterButton.style.backgroundColor = "";
+        doSend("centerButtonReleased")
+    }
+
+    //SOUTH WEST
+
+    function onPressLeftButton3() {
+        pressLeftButton3.style.backgroundColor = "gray";
+        doSend("leftButton3Pressed")
+    }
+
+    function onReleaseLeftButton3() {
+        pressLeftButton3.style.backgroundColor = "";
+        doSend("leftButton3Released")
+    }
+
+    //SOUTH
+
+    function onPressBackButton() {
+        pressBackButton.style.backgroundColor = "gray";
+        doSend("backButtonPressed")
+    }
+
+    function onReleaseBackButton() {
+        pressBackButton.style.backgroundColor = "";
+        doSend("backButtonReleased")
+    }
+
+    //SOUTH EAST
+
+    function onPressRightButton3() {
+        pressRightButton3.style.backgroundColor = "gray";
+        doSend("rightButton3Pressed")
+    }
+
+    function onReleaseRightButton3() {
+        pressRightButton3.style.backgroundColor = "";
+        doSend("rightButton3Released")
+    }
+
+    //STEER LEFT
+
+    function onPressSteerLeftButton() {
+        pressSteerLeftButton.style.backgroundColor = "gray";
+        doSend("steerLeftButtonPressed")
+    }
+
+    function onReleaseSteerLeftButton() {
+        pressSteerLeftButton.style.backgroundColor = "";
+        doSend("steerLeftButtonReleased")
+    }
+
+    //STEER RIGHT
+
+    function onPressSteerRightButton() {
+        pressSteerRightButton.style.backgroundColor = "gray";
+        doSend("steerRightButtonPressed")
+    }
+
+    function onReleaseSteerRightButton() {
+        pressSteerRightButton.style.backgroundColor = "";
+        doSend("steerRightButtonReleased")
+    }
+
+    //-----------------------------------BUTTONS------------------------------------//
+
+    window.addEventListener("load", init, false);
+
+</script>
+
+<h2>MAE361 GROUP PROJECT</h2>
+<table>
+    <tr>
+        <td>
+            <button id="pressLeftButton"
+                    onmousedown="onPressLeftButton()"
+                    onmouseup="onReleaseLeftButton()"
+                    ontouchstart="onPressLeftButton()"
+                    ontouchend="onReleaseLeftButton()"
+                    disabled>
+                &#8598;
+            </button></td>
+        <td>
+            <button id="pressUpButton" 
+                    onmousedown="onPressUpButton()"
+                    onmouseup="onReleaseUpButton()"
+                    ontouchstart="onPressUpButton()"
+                    ontouchend="onReleaseUpButton()"
+                    disabled>
+                &#8593;
+                    </button></td> 
+        <td>
+            <button id="pressRightButton"
+                    onmousedown="onPressRightButton()"
+                    onmouseup="onReleaseRightButton()"
+                    ontouchstart="onPressRightButton()"
+                    ontouchend="onReleaseRightButton()"
+                    disabled>
+                &#8599;
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button id="pressLeftButton2"
+                    onmousedown="onPressLeftButton2()"
+                    onmouseup="onReleaseLeftButton2()"
+                    ontouchstart="onPressLeftButton2()"
+                    ontouchend="onReleaseLeftButton2()"
+                    disabled>
+                &#8592;
+            </button>
+        </td>
+        <td>
+            <button id="pressCenterButton"
+                    onmousedown="onPressCenterButton()"
+                    onmouseup="onReleaseCenterButton()"
+                    ontouchstart="onPressCenterButton()"
+                    ontouchend="onReleaseCenterButton()"
+                    disabled>
+                &#127930;
+            </button>
+        </td>
+        <td>
+            <button id="pressRightButton2"
+                    onmousedown="onPressRightButton2()"
+                    onmouseup="onReleaseRightButton2()"
+                    ontouchstart="onPressRightButton2()"
+                    ontouchend="onReleaseRightButton2()"
+                    disabled>
+                &#8594;
+            </button>
+        </td>
+        <td style="width: 50px; height: 50px;">&nbsp;</td> <!--EMPTY SPACE DELUXE-->
+        <td style="width: 50px; height: 50px;">&nbsp;</td>
+        <td>
+            <button id="pressSteerLeftButton"
+                    onmousedown="onPressSteerLeftButton()"
+                    onmouseup="onReleaseSteerLeftButton()"
+                    ontouchstart="onPressSteerLeftButton()"
+                    ontouchend="onReleaseSteerLeftButton()"
+                    disabled>
+                &#8624;
+            </button>
+        </td>
+        <td>
+            <button id="pressSteerRightButton"
+                    onmousedown="onPressSteerRightButton()"
+                    onmouseup="onReleaseSteerRightButton()"
+                    ontouchstart="onPressSteerRightButton()"
+                    ontouchend="onReleaseSteerRightButton()"
+                    disabled>
+                &#8625;
+            </button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <button id="pressLeftButton3"
+                    onmousedown="onPressLeftButton3()"
+                    onmouseup="onReleaseLeftButton3()"
+                    ontouchstart="onPressLeftButton3()"
+                    ontouchend="onReleaseLeftButton3()"
+                    disabled>
+                &#8601;
+            </button>
+        </td>
+        <td>
+            <button id="pressBackButton"
+                    onmousedown="onPressBackButton()"
+                    onmouseup="onReleaseBackButton()"
+                    ontouchstart="onPressBackButton()"
+                    ontouchend="onReleaseBackButton()"
+                    disabled>
+                &#8595;
+            </button>
+        </td>
+        <td>
+            <button id="pressRightButton3"
+                    onmousedown="onPressRightButton3()"
+                    onmouseup="onReleaseRightButton3()"
+                    ontouchstart="onPressRightButton3()"
+                    ontouchend="onReleaseRightButton3()"
+                    disabled>
+                &#8600;
+            </button>
+        </td>
+    </tr>
+</table>
+
+<div id="output"></div>
