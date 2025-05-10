@@ -92,7 +92,7 @@ void onWebSocketEvent(uint8_t client_num, WStype_t type, uint8_t * payload, size
       westPressed = false;
     }
 
-  //CENTER BUTTON CONTROLS (redundant)
+  //CENTER BUTTON CONTROLS
 
     else if(strcmp((char *)payload, "centerButtonPressed")==0){
       Serial.write(1);
